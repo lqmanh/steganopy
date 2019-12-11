@@ -2,80 +2,89 @@
   <div class="container">
     <h3 class="title">Data detecting</h3>
     <h5 class="subtitle">Check if an image contains any secret data.</h5>
-    <uploadForm
-      title="Upload image to detect:"
-      acceptFile="image/jpeg,image.png"
-      :fileName="imageFileName"
-      @input="changeImageFile"
-    />
-    <div class="columns">
-      <div class="control column">
-        <button class="button is-info" @click="check">Check</button>
+    <section class="section">
+      <upload-form
+        title="Image to check"
+        acceptFile="image/png"
+        :fileName="imageFileName"
+        @input="changeImageFile"
+      />
+      <div class="field">
+        <div class="control">
+          <button v-if="checking" class="button is-dark is-loading">Checking</button>
+          <button v-else-if="checked" class="button is-success">Checked</button>
+          <button v-else class="button is-dark" @click="check">Check</button>
+        </div>
       </div>
-    </div>
-    <div v-if="responseDataUrl">
-      <div v-if="hasData" class="has-text-success is-centered">
+      <div v-if="checked && hasSecretData" class="field has-text-success">
         <span class="icon">
           <ion-icon name="checkmark"></ion-icon>
         </span>
-        <span>This image has data inside!</span>
+        <span>This image MAY have secret data inside!</span>
       </div>
-      <div v-else class="has-text-danger">
+      <div v-else-if="checked" class="field has-text-danger">
         <span class="icon">
           <ion-icon name="close"></ion-icon>
         </span>
-        <span>This image doesn't have data inside!</span>
+        <span>This image does not have secret data inside!</span>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import uploadForm from '../components/upload-form'
+import UploadForm from '../components/upload-form'
 
 export default {
-  name: 'Check',
-  components: {
-    uploadForm
-  },
+  components: { UploadForm },
   data() {
     return {
-      imageFileName: 'No image choosen...',
       imageFile: null,
-      responseDataUrl: '',
-      hasData: Boolean
+      imageFileName: 'No image chosen...',
+      checking: false,
+      checked: false,
+      hasSecretData: false
     }
   },
   methods: {
     changeImageFile(event) {
-      this.imageFile = event
+      this.imageFile = event[0]
       this.imageFileName = event[0].name
+
+      this.checked = false
     },
     check() {
+      this.checking = true
+
       const formData = new FormData()
       formData.append('files', this.imageFile)
       axios
         .post('/api/detect', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
+          headers: { 'content-type': 'multipart/form-data' }
         })
-        .then((response) => {
-          if (response.data.result) {
-            this.hasData = response.data.result
-          } else {
-            console.log(response.data.error)
-          }
+        .then((res) => {
+          const { status, data } = res
+          if (status !== 200) return
+          if (data.result !== undefined) {
+            this.hasSecretData = data.result
+          } else throw new Error(data.error)
+
+          this.checking = false
+          this.checked = true
         })
-        .catch((error) => {
-          console.log(error)
+        .catch((err) => {
+          console.error(err)
+
+          this.checking = false
         })
     }
   }
 }
 </script>
 
-<style>
-template {
-  margin: auto;
+<style scoped>
+.section {
+  padding: 3rem 0;
 }
 </style>

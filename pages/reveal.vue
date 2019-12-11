@@ -1,35 +1,38 @@
 <template>
   <div class="container">
     <h3 class="title">Data revealing</h3>
-    <h5 class="subtitle">Extract data from an image.</h5>
-    <upload-form
-      title="Upload image to decode:"
-      accept-file="image/*"
-      :file-name="imageFileName"
-      @input="changeImageFile"
-    />
-    <div class="columns">
-      <div class="control column">
-        <button class="button is-dark" @click="decode">Decode</button>
+    <h5 class="subtitle">Extract secret data from an image.</h5>
+    <section class="section">
+      <upload-form
+        title="Image to extract"
+        accept-file="image/png"
+        :file-name="imageFileName"
+        @input="changeImageFile"
+      />
+      <div class="field">
+        <div class="control">
+          <button v-if="processing" class="button is-dark is-loading">Processing</button>
+          <button v-else-if="processed" class="button is-success">Processed</button>
+          <button v-else class="button is-dark" @click="process">Process</button>
+        </div>
       </div>
-    </div>
-    <div v-if="responseDataUrl">
-      <div class="field has-addons">
+      <div v-if="responseDataUrl" class="field has-addons">
+        <label class="label">Output</label>
         <div class="control">
           <input class="input" type="text" :value="responseDataUrl" readonly />
         </div>
         <div class="control">
-          <a class="button is-info">
+          <button class="button is-info">
             <span class="file-icon">
-              <ion-icon name="cloud-download"></ion-icon>
+              <ion-icon name="cloud-download" />
             </span>
             <span class="file-label">
               <a :href="responseDataUrl" target="_blank">Download</a>
             </span>
-          </a>
+          </button>
         </div>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
@@ -38,58 +41,57 @@ import axios from 'axios'
 import UploadForm from '../components/upload-form'
 
 export default {
-  name: 'Decode',
-  components: {
-    UploadForm
-  },
+  components: { UploadForm },
   data() {
     return {
-      imageFileName: 'No image choosen...',
       imageFile: null,
+      imageFileName: 'No image chosen...',
+      processing: false,
+      processed: false,
       responseDataUrl: ''
     }
   },
   methods: {
     changeImageFile(event) {
-      this.imageFile = event
+      this.imageFile = event[0]
       this.imageFileName = event[0].name
+
+      this.processed = false
     },
-    decode() {
+    process() {
+      this.processing = true
+
       const formData = new FormData()
       formData.append('files', this.imageFile)
       axios
         .post('/api/reveal', formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         })
-        .then((response) => {
-          if (response.data.url) {
-            this.responseDataUrl = response.data.url
-          } else {
-            console.log(response.data.error)
-          }
+        .then((res) => {
+          const { status, data } = res
+          if (status !== 200) return
+          if (data.url) {
+            this.responseDataUrl = data.url
+          } else throw new Error(data.error)
+
+          this.processing = false
+          this.processed = true
         })
-        .catch((error) => {
-          console.log(error)
+        .catch((err) => {
+          console.error(err)
+
+          this.processing = false
         })
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
+.section {
+  padding: 3rem 0;
+}
 a {
-  color: aliceblue;
-}
-@media only screen and (min-width: 768px) {
-  .card {
-    max-width: 40%;
-    margin: 15px auto;
-  }
-}
-@media only screen and (min-width: 1024px) {
-  .card {
-    max-width: 33%;
-    margin: 15px auto;
-  }
+  color: white;
 }
 </style>
