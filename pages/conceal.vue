@@ -33,6 +33,7 @@
 
 <script>
 import axios from 'axios'
+import toastr from 'toastr'
 import UploadForm from '../components/upload-form'
 
 export default {
@@ -73,7 +74,7 @@ export default {
         })
         .then((res) => {
           const { status, data } = res
-          if (status !== 200) return
+          if (status !== 200) throw new Error('UNKNOWN_ERROR')
           if (data.url) {
             this.responseImageUrl = data.url
           } else throw new Error(data.error)
@@ -82,7 +83,7 @@ export default {
           this.processed = true
         })
         .catch((err) => {
-          console.error(err)
+          toastr.error(err)
 
           this.processing = false
         })

@@ -16,20 +16,22 @@
           <button v-else class="button is-dark" @click="process">Process</button>
         </div>
       </div>
-      <div v-if="responseDataUrl" class="field has-addons">
+      <div v-if="responseDataUrl" class="field">
         <label class="label">Output</label>
-        <div class="control">
-          <input class="input" type="text" :value="responseDataUrl" readonly />
-        </div>
-        <div class="control">
-          <button class="button is-info">
-            <span class="file-icon">
-              <ion-icon name="cloud-download" />
-            </span>
-            <span class="file-label">
-              <a :href="responseDataUrl" target="_blank">Download</a>
-            </span>
-          </button>
+        <div class="field has-addons">
+          <div class="control">
+            <input class="input" type="text" :value="responseDataUrl" readonly />
+          </div>
+          <div class="control">
+            <button class="button is-info">
+              <span class="file-icon">
+                <ion-icon name="cloud-download" />
+              </span>
+              <span class="file-label">
+                <a :href="responseDataUrl" target="_blank">Download</a>
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -38,6 +40,7 @@
 
 <script>
 import axios from 'axios'
+import toastr from 'toastr'
 import UploadForm from '../components/upload-form'
 
 export default {
@@ -69,7 +72,7 @@ export default {
         })
         .then((res) => {
           const { status, data } = res
-          if (status !== 200) return
+          if (status !== 200) throw new Error('UNKNOWN_ERROR')
           if (data.url) {
             this.responseDataUrl = data.url
           } else throw new Error(data.error)
@@ -78,7 +81,7 @@ export default {
           this.processed = true
         })
         .catch((err) => {
-          console.error(err)
+          toastr.error(err)
 
           this.processing = false
         })

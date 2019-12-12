@@ -34,6 +34,7 @@
 
 <script>
 import axios from 'axios'
+import toastr from 'toastr'
 import UploadForm from '../components/upload-form'
 
 export default {
@@ -65,7 +66,7 @@ export default {
         })
         .then((res) => {
           const { status, data } = res
-          if (status !== 200) return
+          if (status !== 200) throw new Error('UNKNOWN_ERROR')
           if (data.result !== undefined) {
             this.hasSecretData = data.result
           } else throw new Error(data.error)
@@ -74,7 +75,7 @@ export default {
           this.checked = true
         })
         .catch((err) => {
-          console.error(err)
+          toastr.error(err)
 
           this.checking = false
         })
