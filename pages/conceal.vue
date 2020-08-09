@@ -16,9 +16,15 @@
       />
       <div class="field">
         <div class="control">
-          <button v-if="processing" class="button is-dark is-loading">Processing</button>
-          <button v-else-if="processed" class="button is-success">Processed</button>
-          <button v-else class="button is-dark" @click="process">Process</button>
+          <button v-if="processing" class="button is-dark is-loading">
+            Processing
+          </button>
+          <button v-else-if="processed" class="button is-success">
+            Processed
+          </button>
+          <button v-else class="button is-dark" @click="process">
+            Process
+          </button>
         </div>
       </div>
       <div v-if="responseImageUrl" class="field">
@@ -46,7 +52,7 @@ export default {
       imageFileName: 'No image chosen...',
       processing: false,
       processed: false,
-      responseImageUrl: ''
+      responseImageUrl: '',
     }
   },
   methods: {
@@ -70,7 +76,7 @@ export default {
       formData.append('files', this.secretFile)
       axios
         .post('/api/conceal', formData, {
-          headers: { 'content-type': 'multipart/form-data' }
+          headers: { 'content-type': 'multipart/form-data' },
         })
         .then((res) => {
           const { status, data } = res
@@ -87,8 +93,8 @@ export default {
 
           this.processing = false
         })
-    }
-  }
+    },
+  },
 }
 </script>
 

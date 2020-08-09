@@ -5,8 +5,8 @@
     <section class="section">
       <upload-form
         title="Image to check"
-        acceptFile="image/png"
-        :fileName="imageFileName"
+        accept-file="image/png"
+        :file-name="imageFileName"
         @input="changeImageFile"
       />
       <div class="field">
@@ -45,7 +45,7 @@ export default {
       imageFileName: 'No image chosen...',
       checking: false,
       checked: false,
-      hasSecretData: false
+      hasSecretData: false,
     }
   },
   methods: {
@@ -62,7 +62,7 @@ export default {
       formData.append('files', this.imageFile)
       axios
         .post('/api/detect', formData, {
-          headers: { 'content-type': 'multipart/form-data' }
+          headers: { 'content-type': 'multipart/form-data' },
         })
         .then((res) => {
           const { status, data } = res
@@ -79,8 +79,8 @@ export default {
 
           this.checking = false
         })
-    }
-  }
+    },
+  },
 }
 </script>
 

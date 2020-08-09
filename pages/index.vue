@@ -32,7 +32,7 @@
 import FeatureCard from '../components/feature-card'
 
 export default {
-  components: { FeatureCard }
+  components: { FeatureCard },
 }
 </script>
 

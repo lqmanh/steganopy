@@ -23,6 +23,6 @@
 
 <script>
 export default {
-  props: ['title', 'acceptFile', 'fileName', 'value']
+  props: ['title', 'acceptFile', 'fileName', 'value'],
 }
 </script>

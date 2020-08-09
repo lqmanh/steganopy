@@ -1,8 +1,8 @@
-from io import BytesIO
-from PIL import Image
 import struct
+from io import BytesIO
 
 import numpy as np
+from PIL import Image
 
 
 def conceal(img: Image, payload_buffer: bytes) -> bytes:

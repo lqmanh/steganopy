@@ -4,27 +4,21 @@
       <p class="menu-label">General</p>
       <ul class="menu-list">
         <li>
-          <nuxt-link to="/">
-            <ion-icon name="home" />
-            &nbsp;Home
-          </nuxt-link>
+          <nuxt-link to="/"><ion-icon name="home" />&nbsp;Home</nuxt-link>
         </li>
         <li>
           <nuxt-link to="/conceal">
-            <ion-icon name="eye-off" />
-            &nbsp;Data concealing
+            <ion-icon name="eye-off" />&nbsp;Data concealing
           </nuxt-link>
         </li>
         <li>
           <nuxt-link to="/detect">
-            <ion-icon name="search" />
-            &nbsp;Data detecting
+            <ion-icon name="search" />&nbsp;Data detecting
           </nuxt-link>
         </li>
         <li>
           <nuxt-link to="/reveal">
-            <ion-icon name="eye" />
-            &nbsp;Data revealing
+            <ion-icon name="eye" />&nbsp;Data revealing
           </nuxt-link>
         </li>
       </ul>
@@ -32,8 +26,7 @@
       <ul class="menu-list">
         <li>
           <a href="https://github.com/lqmanh/steganopy">
-            <ion-icon name="logo-github" />
-            &nbsp;Github
+            <ion-icon name="logo-github" />&nbsp;Github
           </a>
         </li>
       </ul>
@@ -41,14 +34,12 @@
       <ul class="menu-list">
         <li>
           <a href="https://github.com/lqmanh">
-            <ion-icon name="person"></ion-icon>
-            &nbsp;Lương Quang Mạnh
+            <ion-icon name="person"></ion-icon>&nbsp;Lương Quang Mạnh
           </a>
         </li>
         <li>
           <a href="https://github.com/nghiaduy9">
-            <ion-icon name="person"></ion-icon>
-            &nbsp;Ngô Đức Nghĩa
+            <ion-icon name="person"></ion-icon>&nbsp;Ngô Đức Nghĩa
           </a>
         </li>
       </ul>

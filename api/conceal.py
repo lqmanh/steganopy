@@ -1,11 +1,10 @@
 from io import BytesIO
-from PIL import Image
 
+from PIL import Image
 from sanic import Sanic, response
 
 from api._stegano import conceal, validate_payload_size
 from api._utils import save_to_storage
-
 
 app = Sanic()
 

@@ -1,9 +1,8 @@
-from datetime import datetime as dt
 import os
+from datetime import datetime as dt
 
 import firebase_admin
 from firebase_admin import credentials, storage
-
 
 cred = credentials.Certificate(
     os.path.join(os.path.dirname(__file__), "../service-account-key.json")

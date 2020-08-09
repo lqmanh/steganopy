@@ -51,7 +51,7 @@ export default {
       imageFileName: 'No image chosen...',
       processing: false,
       processed: false,
-      responseDataUrl: ''
+      responseDataUrl: '',
     }
   },
   methods: {
@@ -68,7 +68,7 @@ export default {
       formData.append('files', this.imageFile)
       axios
         .post('/api/reveal', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
+          headers: { 'Content-Type': 'multipart/form-data' },
         })
         .then((res) => {
           const { status, data } = res
@@ -85,8 +85,8 @@ export default {
 
           this.processing = false
         })
-    }
-  }
+    },
+  },
 }
 </script>
 

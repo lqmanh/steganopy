@@ -1,10 +1,9 @@
 from io import BytesIO
-from PIL import Image
 
+from PIL import Image
 from sanic import Sanic, response
 
 from api._stegano import detect
-
 
 app = Sanic()
 
